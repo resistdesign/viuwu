@@ -1,0 +1,36 @@
+{
+  "name": "viuwu",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "User-controlled video channels for Android TV.",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace @viuwu/site",
+    "dev:site": "npm run dev --workspace @viuwu/site",
+    "dev:tv": "npm run start --workspace @viuwu/tv",
+    "build": "npm run build --workspace @viuwu/site",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "lint": "eslint .",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "test": "npm run test --workspace @viuwu/core",
+    "check": "npm run format:check && npm run lint && npm run typecheck && npm run test && npm run build"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.4",
+    "eslint": "^9.39.4",
+    "globals": "^16.5.0",
+    "prettier": "^3.8.4",
+    "react": "19.2.3",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.61.0",
+    "vitest": "^4.1.8"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

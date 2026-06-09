@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#0b0910"/>
+  <circle cx="1000" cy="80" r="380" fill="#8639b5"/>
+  <circle cx="1000" cy="80" r="270" fill="none" stroke="#d9c3ee" stroke-width="3" opacity=".5"/>
+  <path d="M870 205c40-90 120-122 212-112-65 25-97 70-108 134 35-31 79-48 132-51-52 42-86 91-104 147" fill="none" stroke="#ffcf4a" stroke-width="30" stroke-linecap="round"/>
+  <text x="78" y="115" fill="#f5f0e7" font-family="Arial, sans-serif" font-size="46" font-weight="700">viuwu</text>
+  <text x="74" y="315" fill="#f5f0e7" font-family="Arial, sans-serif" font-size="102" font-weight="800" letter-spacing="-6">Make your own</text>
+  <text x="74" y="420" fill="#a968e2" font-family="Georgia, serif" font-size="120" font-style="italic" font-weight="700">channels.</text>
+  <text x="80" y="520" fill="#aaa3b0" font-family="Arial, sans-serif" font-size="28">Saved searches become a TV guide you control.</text>
+  <text x="80" y="572" fill="#ffcf4a" font-family="Arial, sans-serif" font-size="20" font-weight="700" letter-spacing="3">DO YOU. VIUWU.</text>
+</svg>
+
