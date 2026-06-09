@@ -2,7 +2,7 @@
 
 ## Current Status
 
-First milestone implementation is complete and ready to deploy from `main`.
+First milestone implementation is complete and live on `main`.
 
 ## Completed
 
@@ -13,12 +13,13 @@ First milestone implementation is complete and ready to deploy from `main`.
 - Landing site and TV app source implemented.
 - CI, GitHub Pages workflow, Pages environment, and `main` branch protection configured.
 - Production domain `viuwu.resist.design` configured with a committed deployment `CNAME` and HTTPS.
+- Landing site deployed successfully at `https://viuwu.resist.design/`; HTTP redirects to HTTPS.
 - Formatting, linting, type checks, core tests, site build, responsive browser review, and Android
   TV native prebuild completed.
 
 ## Active
 
-- Deploy the landing site to `https://viuwu.resist.design/`.
+- No active bootstrap work.
 
 ## Next
 
