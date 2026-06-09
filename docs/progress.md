@@ -2,7 +2,7 @@
 
 ## Current Status
 
-First milestone implementation is complete on `chore/bootstrap-viuwu` and ready for review.
+First milestone implementation is complete and ready to deploy from `main`.
 
 ## Completed
 
@@ -18,7 +18,7 @@ First milestone implementation is complete on `chore/bootstrap-viuwu` and ready 
 
 ## Active
 
-- Review the bootstrap pull request.
+- Deploy the landing site to `https://viuwu.resist.design/`.
 
 ## Next
 
