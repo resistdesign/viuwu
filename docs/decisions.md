@@ -24,3 +24,10 @@ identifier is allowed to become the guide's primary model.
 
 Use Vite to build a static site deployed by GitHub Actions. The site needs polished interaction and
 metadata, not a server runtime.
+
+## 2026-06-09: Production Pages Domain
+
+Serve the site from `https://viuwu.resist.design/`. Build Vite assets from `/`, commit the uppercase
+`CNAME` in the public directory, verify it in CI before upload, and enforce HTTPS through GitHub
+Pages. GitHub Actions does not require the file, but retaining it makes the intended domain explicit
+in both source and deployment artifacts.

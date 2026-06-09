@@ -34,6 +34,9 @@ jobs:
       - name: Build site
         run: npm run build
 
+      - name: Verify custom domain artifact
+        run: test "$(cat apps/site/dist/CNAME)" = "viuwu.resist.design"
+
       - name: Configure Pages
         uses: actions/configure-pages@v5
 
@@ -45,7 +48,7 @@ jobs:
   deploy:
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+      url: https://viuwu.resist.design/
     needs: build
     runs-on: ubuntu-latest
     steps:

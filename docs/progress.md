@@ -12,6 +12,7 @@ First milestone implementation is complete on `chore/bootstrap-viuwu` and ready 
 - Shared provider-neutral domain package and brand tokens implemented.
 - Landing site and TV app source implemented.
 - CI, GitHub Pages workflow, Pages environment, and `main` branch protection configured.
+- Production domain `viuwu.resist.design` configured with a committed deployment `CNAME` and HTTPS.
 - Formatting, linting, type checks, core tests, site build, responsive browser review, and Android
   TV native prebuild completed.
 
@@ -28,7 +29,6 @@ First milestone implementation is complete on `chore/bootstrap-viuwu` and ready 
 
 ## Known Blockers
 
-- A custom production domain is not yet specified, so Pages initially uses the project URL.
 - Physical-device validation requires Android TV hardware or an emulator.
 - Expo Doctor reports the core `react-native` package nested under
   `@react-native-tvos/virtualized-lists`; Android TV prebuild succeeds and this is tracked as an

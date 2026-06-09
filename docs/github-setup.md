@@ -7,7 +7,7 @@
 - Pull request branch for the bootstrap milestone.
 - CI for formatting, linting, type checks, tests, and site build.
 - GitHub Pages artifact deployment on pushes to `main`.
-- GitHub Pages configured to use Actions at `https://resistdesign.github.io/viuwu/`.
+- GitHub Pages configured to use Actions at `https://viuwu.resist.design/`.
 - `main` protected with required pull requests, `Quality`, conversation resolution, and blocked
   force pushes/deletion.
 
@@ -29,9 +29,13 @@ maintainer. Increase the approval count when collaborators are added.
 
 ## Custom Domain
 
-No domain was specified at bootstrap. When one is chosen:
+The production domain is `viuwu.resist.design`.
 
-1. Run `CUSTOM_DOMAIN=example.com npm run domain --workspace @viuwu/site`.
-2. Point DNS at GitHub Pages according to GitHub's current documentation.
-3. Update canonical and social metadata in `apps/site/index.html`.
-4. Enable HTTPS enforcement after DNS verification.
+- Route 53 has a direct `CNAME` from `viuwu.resist.design` to `resistdesign.github.io`.
+- Repository Pages settings use `viuwu.resist.design` as the custom domain.
+- HTTPS is enforced in GitHub Pages.
+- `apps/site/public/CNAME` is committed and copied into every Vite build.
+- The Pages workflow fails before upload if the built `CNAME` is missing or incorrect.
+
+GitHub currently ignores the `CNAME` file when deployment uses a custom Actions workflow, but the
+file remains in the artifact as an explicit, portable record of the intended domain.
