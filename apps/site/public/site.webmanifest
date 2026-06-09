@@ -1,0 +1,16 @@
+{
+  "name": "Viuwu",
+  "short_name": "Viuwu",
+  "description": "Saved searches become your channels.",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#0b0910",
+  "theme_color": "#8639b5",
+  "icons": [
+    {
+      "src": "./favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

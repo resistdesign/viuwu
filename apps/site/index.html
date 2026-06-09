@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Viuwu - Make your own channels</title>
+    <meta
+      name="description"
+      content="Viuwu turns your saved video searches into a TV guide you control. No mystery feed. Just your channels."
+    />
+    <meta name="theme-color" content="#0b0910" />
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
+    <link rel="manifest" href="./site.webmanifest" />
+    <link rel="canonical" href="https://resistdesign.github.io/viuwu/" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Viuwu" />
+    <meta property="og:title" content="Viuwu - Do you. Viuwu." />
+    <meta
+      property="og:description"
+      content="Saved searches become channels. Build a video guide around what you actually want."
+    />
+    <meta property="og:url" content="https://resistdesign.github.io/viuwu/" />
+    <meta property="og:image" content="https://resistdesign.github.io/viuwu/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Viuwu - Do you. Viuwu." />
+    <meta name="twitter:description" content="Saved searches become channels. No mystery feed." />
+    <meta name="twitter:image" content="https://resistdesign.github.io/viuwu/og-image.png" />
+  </head>
+  <body>
+    <header class="site-nav">
+      <a class="brand" href="#" aria-label="Viuwu home">
+        <img src="./logo.svg" alt="Viuwu" />
+      </a>
+      <nav aria-label="Primary navigation">
+        <a href="#how">How it works</a>
+        <a href="#principles">Why Viuwu</a>
+        <a class="nav-github" href="https://github.com/resistdesign/viuwu">GitHub ↗</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow"><span></span> Your taste. Your remote. Your rules.</p>
+          <h1>
+            Make your<br />
+            own <em>channels.</em>
+          </h1>
+          <p class="hero-lede">
+            Viuwu turns saved searches into a TV guide you control. No mystery feed. No autoplay
+            rabbit hole somebody else picked.
+          </p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#how">See how it works <span>↓</span></a>
+            <a class="button button-quiet" href="https://github.com/resistdesign/viuwu"
+              >Follow the build ↗</a
+            >
+          </div>
+          <p class="availability">Coming first to Android TV · Open source</p>
+        </div>
+
+        <div class="hero-art" aria-label="A preview of a custom Viuwu TV guide">
+          <div class="orbit orbit-one"></div>
+          <div class="orbit orbit-two"></div>
+          <div class="spark spark-a">✦</div>
+          <div class="spark spark-b">✦</div>
+          <div class="tv-shell">
+            <div class="tv-topbar">
+              <img src="./logo-light.svg" alt="" />
+              <span>8:42</span>
+            </div>
+            <div class="tv-heading">
+              <div>
+                <small>GOOD EVENING</small>
+                <strong>Your guide</strong>
+              </div>
+              <span class="fresh-dot">Fresh now</span>
+            </div>
+            <div class="mini-guide" id="mini-guide"></div>
+          </div>
+          <div class="channel-chip">
+            <span>NEW CHANNEL</span>
+            <strong>Made by hand</strong>
+            <small>ceramics + printmaking + woodworking</small>
+          </div>
+        </div>
+      </section>
+
+      <section class="marquee" aria-label="Viuwu product principles">
+        <div>
+          <span>SEARCH IT</span><b>✦</b><span>SAVE IT</span><b>✦</b><span>CHANNEL IT</span><b>✦</b
+          ><span>WATCH YOUR WAY</span><b>✦</b><span>SEARCH IT</span><b>✦</b>
+        </div>
+      </section>
+
+      <section class="how" id="how">
+        <div class="section-intro">
+          <p class="eyebrow"><span></span> A guide with an explanation</p>
+          <h2>Your interests,<br />lined up nicely.</h2>
+          <p>
+            Every row starts with words you chose. Viuwu finds fresh matches and puts them where a
+            channel belongs: in a finite, readable guide.
+          </p>
+        </div>
+        <div class="steps">
+          <article>
+            <span class="step-number">01</span>
+            <div class="step-icon search-icon"></div>
+            <h3>Search for a thing</h3>
+            <p>“Tiny live music sessions.” “Studio tours.” “Dinner in twenty minutes.”</p>
+          </article>
+          <article>
+            <span class="step-number">02</span>
+            <div class="step-icon save-icon">＋</div>
+            <h3>Save it as a channel</h3>
+            <p>Name it, pick the sources, and put it exactly where you want in the guide.</p>
+          </article>
+          <article>
+            <span class="step-number">03</span>
+            <div class="step-icon remote-icon"><i></i><b></b></div>
+            <h3>Pick up the remote</h3>
+            <p>Fresh matches, clear focus, and no need to negotiate with an algorithm.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="manifesto" id="principles">
+        <div class="manifesto-mark">
+          <img src="./icon.svg" alt="" />
+        </div>
+        <div class="manifesto-copy">
+          <p class="eyebrow eyebrow-light"><span></span> Not another feed</p>
+          <h2>Recommendation<br />is not destiny.</h2>
+          <p>
+            A useful video app should remember what you asked for, not guess who you are. Viuwu
+            keeps the sources visible and the controls close.
+          </p>
+          <div class="principles-grid">
+            <div><strong>You name it.</strong><span>Every channel has a human reason.</span></div>
+            <div>
+              <strong>You order it.</strong><span>Your guide reflects your priorities.</span>
+            </div>
+            <div><strong>You source it.</strong><span>One provider now. More later.</span></div>
+            <div>
+              <strong>You stop it.</strong><span>Finite rows instead of endless scroll.</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="closing">
+        <p class="eyebrow"><span></span> Built for selective people</p>
+        <h2>Do you.<br /><em>Viuwu.</em></h2>
+        <a class="button button-primary" href="https://github.com/resistdesign/viuwu"
+          >Watch the project on GitHub ↗</a
+        >
+      </section>
+    </main>
+
+    <footer>
+      <img src="./logo-light.svg" alt="Viuwu" />
+      <p>Your guide. Nobody else's.</p>
+      <div>
+        <a href="https://github.com/resistdesign/viuwu">GitHub</a>
+        <span>Open source · 2026</span>
+      </div>
+    </footer>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

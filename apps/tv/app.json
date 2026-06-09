@@ -1,0 +1,29 @@
+{
+  "expo": {
+    "name": "Viuwu",
+    "slug": "viuwu",
+    "version": "0.1.0",
+    "orientation": "landscape",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "dark",
+    "android": {
+      "package": "design.resist.viuwu",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#0b0910"
+      }
+    },
+    "plugins": [
+      "@react-native-tvos/config-tv",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/splash.png",
+          "imageWidth": 960,
+          "resizeMode": "contain",
+          "backgroundColor": "#0b0910"
+        }
+      ]
+    ]
+  }
+}
