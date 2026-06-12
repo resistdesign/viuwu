@@ -28,6 +28,10 @@ Expo SDK 56 supplies the build system. `react-native-tvos` supplies Android TV a
 support, and `@react-native-tvos/config-tv` applies native project changes during prebuild.
 Generated native folders remain untracked.
 
+Tagged releases regenerate the Android project in GitHub Actions and sign the APK with a dedicated
+release key stored only in repository secrets. This keeps the native project reproducible while
+preserving a stable Android upgrade identity.
+
 The first milestone uses local screen state and mock data. Screen, navigation, guide-row, and
 focusable-card boundaries are already separated for later routing and data integration.
 

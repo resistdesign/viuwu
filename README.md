@@ -26,6 +26,10 @@ npm run android --workspace @viuwu/tv
 
 The Android command requires Android Studio and an Android TV emulator or device.
 
+Installable preview APKs are published under
+[GitHub Releases](https://github.com/resistdesign/viuwu/releases). See
+[docs/releases.md](docs/releases.md) for signing, versioning, and physical-TV installation.
+
 ## Quality Commands
 
 ```bash

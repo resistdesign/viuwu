@@ -31,3 +31,9 @@ Serve the site from `https://viuwu.resist.design/`. Build Vite assets from `/`, 
 `CNAME` in the public directory, verify it in CI before upload, and enforce HTTPS through GitHub
 Pages. GitHub Actions does not require the file, but retaining it makes the intended domain explicit
 in both source and deployment artifacts.
+
+## 2026-06-11: Signed Tag-Driven Android Releases
+
+Generate Android from Expo configuration for every `v*` tag, sign with a dedicated repository
+secret, reject debug certificates, and publish the APK plus SHA-256 checksum as a GitHub prerelease.
+Preview releases remain explicitly mock-data-only until a live provider and playback are complete.
