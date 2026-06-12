@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
+import QRCode from 'react-native-qrcode-svg';
 
 import { colors, radii } from '@viuwu/brand';
 
@@ -86,11 +87,26 @@ export function YouTubeConnectScreen({ onConnected }: YouTubeConnectScreenProps)
           </>
         ) : deviceCode ? (
           <>
-            <Text style={styles.cardLabel}>ON YOUR PHONE OR COMPUTER</Text>
-            <Text style={styles.instruction}>Visit</Text>
-            <Text style={styles.url}>{deviceCode.verificationUrl}</Text>
-            <Text style={styles.instruction}>and enter this code</Text>
-            <Text style={styles.code}>{deviceCode.userCode}</Text>
+            <Text style={styles.cardLabel}>SCAN WITH YOUR PHONE</Text>
+            <View style={styles.connectRow}>
+              <View style={styles.qrFrame}>
+                <QRCode
+                  backgroundColor="#ffffff"
+                  color={colors.ink}
+                  size={180}
+                  value={deviceCode.verificationUrlComplete}
+                />
+              </View>
+              <View style={styles.connectCopy}>
+                <Text style={styles.scanTitle}>Open your camera and scan.</Text>
+                <Text style={styles.accountHint}>
+                  Google will let you choose which signed-in account to connect.
+                </Text>
+                <Text style={styles.fallbackLabel}>OR ENTER THE CODE AT</Text>
+                <Text style={styles.url}>{deviceCode.verificationUrl}</Text>
+                <Text style={styles.code}>{deviceCode.userCode}</Text>
+              </View>
+            </View>
             <View style={styles.polling}>
               <ActivityIndicator color={colors.mint} size="small" />
               <Text style={styles.pollingText}>Waiting for YouTube...</Text>
@@ -129,16 +145,16 @@ const styles = StyleSheet.create({
   },
   title: {
     color: colors.paper,
-    fontSize: 52,
+    fontSize: 44,
     fontWeight: '900',
     letterSpacing: -2,
-    marginTop: 10,
+    marginTop: 6,
   },
   subtitle: {
     color: '#a39aa9',
-    fontSize: 16,
-    lineHeight: 24,
-    marginTop: 12,
+    fontSize: 14,
+    lineHeight: 20,
+    marginTop: 8,
     maxWidth: 720,
     textAlign: 'center',
   },
@@ -146,11 +162,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: colors.panel,
     borderRadius: radii.lg,
-    marginTop: 34,
-    minHeight: 280,
-    paddingHorizontal: 64,
-    paddingVertical: 34,
-    width: 720,
+    marginTop: 24,
+    minHeight: 340,
+    paddingHorizontal: 46,
+    paddingVertical: 22,
+    width: 880,
   },
   cardLabel: {
     color: colors.yellow,
@@ -158,29 +174,56 @@ const styles = StyleSheet.create({
     fontWeight: '900',
     letterSpacing: 1.4,
   },
-  instruction: {
-    color: '#978e9e',
-    fontSize: 14,
+  connectRow: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    gap: 42,
     marginTop: 18,
   },
-  url: {
+  qrFrame: {
+    backgroundColor: '#ffffff',
+    borderRadius: 14,
+    padding: 14,
+  },
+  connectCopy: {
+    width: 475,
+  },
+  scanTitle: {
     color: colors.paper,
-    fontSize: 24,
+    fontSize: 23,
+    fontWeight: '900',
+  },
+  accountHint: {
+    color: '#aaa1b0',
+    fontSize: 14,
+    lineHeight: 21,
+    marginTop: 8,
+  },
+  fallbackLabel: {
+    color: '#776e7d',
+    fontSize: 9,
+    fontWeight: '900',
+    letterSpacing: 1.1,
+    marginTop: 24,
+  },
+  url: {
+    color: '#bdb5c3',
+    fontSize: 15,
     fontWeight: '800',
-    marginTop: 5,
+    marginTop: 6,
   },
   code: {
     color: colors.mint,
-    fontSize: 40,
+    fontSize: 31,
     fontWeight: '900',
-    letterSpacing: 6,
-    marginTop: 7,
+    letterSpacing: 4,
+    marginTop: 9,
   },
   polling: {
     alignItems: 'center',
     flexDirection: 'row',
     gap: 10,
-    marginTop: 22,
+    marginTop: 12,
   },
   pollingText: {
     color: '#9c93a2',
@@ -195,7 +238,7 @@ const styles = StyleSheet.create({
     color: '#ff9c8d',
     fontSize: 15,
     lineHeight: 23,
-    marginTop: 22,
+    marginTop: 12,
     maxWidth: 560,
     textAlign: 'center',
   },

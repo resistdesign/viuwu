@@ -10,6 +10,7 @@ export interface YouTubeDeviceCode {
   deviceCode: string;
   userCode: string;
   verificationUrl: string;
+  verificationUrlComplete: string;
   expiresAt: number;
   intervalSeconds: number;
 }
@@ -80,6 +81,9 @@ export async function beginYouTubeConnection(): Promise<YouTubeDeviceCode> {
     deviceCode: response.device_code,
     userCode: response.user_code,
     verificationUrl: response.verification_url,
+    verificationUrlComplete: `https://accounts.google.com/device?user_code=${encodeURIComponent(
+      response.user_code,
+    )}`,
     expiresAt: Date.now() + response.expires_in * 1000,
     intervalSeconds: response.interval ?? 5,
   };

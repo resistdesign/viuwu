@@ -22,9 +22,10 @@ identity and a finite set of recent matches. Remote focus makes the current choi
 The Channels screen previews management controls for adding, pausing, and reordering searches.
 Settings exposes the connected YouTube account and playback preferences without hiding them.
 
-First launch requires connecting YouTube through Google's TV device authorization flow. Mock data
-still represents the guide interaction model; persistence, live search, video playback, and result
-refresh are later milestones.
+First launch requires connecting YouTube through Google's TV device authorization flow. The TV
+shows a QR code that opens Google's account selection and consent page with the device code
+prefilled, plus a manual code fallback. Mock data still represents the guide interaction model;
+persistence, live search, video playback, and result refresh are later milestones.
 
 ## Platform
 

@@ -25,6 +25,8 @@ YouTube-only first-launch authorization is in active development.
 - Google TV OAuth client ID configured in a git-ignored local environment file and GitHub Actions.
 - Google's device endpoint accepted the credential, and the signed app displayed a live activation
   code on the physical TV.
+- First-launch authorization now displays a QR code that opens Google's device page with the
+  current code prefilled; the manual URL and code remain as fallback.
 
 ## Active
 
