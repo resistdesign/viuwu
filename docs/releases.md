@@ -36,6 +36,7 @@ The release key is not committed. GitHub Actions requires:
 - `VIUWU_ANDROID_KEY_ALIAS`
 - `VIUWU_ANDROID_KEY_PASSWORD`
 - `VIUWU_YOUTUBE_TV_CLIENT_ID`
+- `VIUWU_YOUTUBE_TV_CLIENT_SECRET`
 
 The key must be backed up permanently. Losing it prevents future APKs from upgrading installed
 copies.
@@ -43,12 +44,13 @@ copies.
 ## YouTube Credentials
 
 Create an OAuth 2.0 client in Google Cloud with application type **TVs and Limited Input devices**.
-Store that client ID in the GitHub Actions secret `VIUWU_YOUTUBE_TV_CLIENT_ID`. The workflow exposes
-it to Expo as `EXPO_PUBLIC_YOUTUBE_TV_CLIENT_ID`; OAuth client IDs are application identifiers, not
-client secrets. Never add a Google OAuth client secret to the app.
+Store its client ID and client secret in the GitHub Actions secrets `VIUWU_YOUTUBE_TV_CLIENT_ID` and
+`VIUWU_YOUTUBE_TV_CLIENT_SECRET`. The workflow exposes them to Expo for Google's device token
+exchange. Google requires the client secret in that request while also documenting that distributed
+TV applications cannot keep it confidential; it must not be treated as a backend credential.
 
-For local builds, copy `apps/tv/.env.example` to `apps/tv/.env.local` and set the client ID there.
-All `.env*` files except `.env.example` are ignored by git.
+For local builds, copy `apps/tv/.env.example` to `apps/tv/.env.local` and set both values there. All
+`.env*` files except `.env.example` are ignored by git.
 
 The app requests read-only YouTube access and stores access and refresh tokens with Expo Secure
 Store. Live search may use the OAuth access token with the YouTube Data API; an API key alone cannot

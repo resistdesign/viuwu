@@ -32,6 +32,8 @@ interface OAuthError {
 }
 
 export const youtubeClientId = process.env.EXPO_PUBLIC_YOUTUBE_TV_CLIENT_ID?.trim() ?? '';
+const youtubeClientSecret = process.env.EXPO_PUBLIC_YOUTUBE_TV_CLIENT_SECRET?.trim() ?? '';
+export const youtubeConfigured = Boolean(youtubeClientId && youtubeClientSecret);
 
 function formBody(values: Record<string, string>) {
   return Object.entries(values)
@@ -59,8 +61,8 @@ async function saveSession(session: YouTubeSession) {
 }
 
 export async function beginYouTubeConnection(): Promise<YouTubeDeviceCode> {
-  if (!youtubeClientId) {
-    throw new Error('This build is missing its YouTube TV OAuth client ID.');
+  if (!youtubeConfigured) {
+    throw new Error('This build is missing its YouTube TV OAuth credentials.');
   }
 
   const response = await postForm<{
@@ -91,6 +93,7 @@ export async function pollForYouTubeSession(
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     body: formBody({
       client_id: youtubeClientId,
+      client_secret: youtubeClientSecret,
       device_code: deviceCode.deviceCode,
       grant_type: 'urn:ietf:params:oauth:grant-type:device_code',
     }),
@@ -127,6 +130,7 @@ export async function restoreYouTubeSession(): Promise<YouTubeSession | null> {
 
     const refreshed = await postForm<TokenResponse>(TOKEN_URL, {
       client_id: youtubeClientId,
+      client_secret: youtubeClientSecret,
       refresh_token: session.refreshToken,
       grant_type: 'refresh_token',
     });

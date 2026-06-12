@@ -47,8 +47,10 @@ jobs:
       - name: Generate Android TV project
         env:
           EXPO_PUBLIC_YOUTUBE_TV_CLIENT_ID: ${{ secrets.VIUWU_YOUTUBE_TV_CLIENT_ID }}
+          EXPO_PUBLIC_YOUTUBE_TV_CLIENT_SECRET: ${{ secrets.VIUWU_YOUTUBE_TV_CLIENT_SECRET }}
         run: |
           test -n "$EXPO_PUBLIC_YOUTUBE_TV_CLIENT_ID"
+          test -n "$EXPO_PUBLIC_YOUTUBE_TV_CLIENT_SECRET"
           npm run prebuild:tv --workspace @viuwu/tv
 
       - name: Set up Java
@@ -69,6 +71,7 @@ jobs:
         env:
           NODE_ENV: production
           EXPO_PUBLIC_YOUTUBE_TV_CLIENT_ID: ${{ secrets.VIUWU_YOUTUBE_TV_CLIENT_ID }}
+          EXPO_PUBLIC_YOUTUBE_TV_CLIENT_SECRET: ${{ secrets.VIUWU_YOUTUBE_TV_CLIENT_SECRET }}
           VIUWU_RELEASE_STORE_FILE: viuwu-release.jks
           VIUWU_RELEASE_STORE_PASSWORD: ${{ secrets.VIUWU_ANDROID_STORE_PASSWORD }}
           VIUWU_RELEASE_KEY_ALIAS: ${{ secrets.VIUWU_ANDROID_KEY_ALIAS }}

@@ -7,7 +7,7 @@ import { Focusable } from '../components/Focusable';
 import {
   beginYouTubeConnection,
   pollForYouTubeSession,
-  youtubeClientId,
+  youtubeConfigured,
   type YouTubeDeviceCode,
   type YouTubeSession,
 } from '../services/youtubeAuth';
@@ -34,7 +34,7 @@ export function YouTubeConnectScreen({ onConnected }: YouTubeConnectScreenProps)
   }, []);
 
   useEffect(() => {
-    if (youtubeClientId) void startConnection();
+    if (youtubeConfigured) void startConnection();
   }, [startConnection]);
 
   useEffect(() => {
@@ -74,12 +74,10 @@ export function YouTubeConnectScreen({ onConnected }: YouTubeConnectScreenProps)
       </Text>
 
       <View style={styles.card}>
-        {!youtubeClientId ? (
+        {!youtubeConfigured ? (
           <>
             <Text style={styles.cardLabel}>BUILD CONFIGURATION REQUIRED</Text>
-            <Text style={styles.error}>
-              This build is missing EXPO_PUBLIC_YOUTUBE_TV_CLIENT_ID and cannot connect YouTube.
-            </Text>
+            <Text style={styles.error}>This build is missing its YouTube OAuth configuration.</Text>
           </>
         ) : loading ? (
           <>
