@@ -1,16 +1,13 @@
-import { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { colors } from '@viuwu/brand';
-import { providers } from '@viuwu/core';
+import { Focusable } from '../components/Focusable';
 
-import { Focusable, Toggle } from '../components/Focusable';
+interface SettingsScreenProps {
+  onDisconnect: () => void;
+}
 
-export function SettingsScreen() {
-  const [autoplay, setAutoplay] = useState(false);
-  const [freshOnly, setFreshOnly] = useState(true);
-  const [quietPreviews, setQuietPreviews] = useState(true);
-
+export function SettingsScreen({ onDisconnect }: SettingsScreenProps) {
   return (
     <View style={styles.screen}>
       <Text style={styles.eyebrow}>SETTINGS</Text>
@@ -20,45 +17,33 @@ export function SettingsScreen() {
       </Text>
       <View style={styles.columns}>
         <View style={styles.column}>
-          <Text style={styles.sectionTitle}>PLAYBACK</Text>
-          <Toggle
-            active={autoplay}
-            label="Autoplay the next match"
-            onPress={() => setAutoplay(!autoplay)}
-          />
-          <Toggle
-            active={freshOnly}
-            label="Prefer unseen videos"
-            onPress={() => setFreshOnly(!freshOnly)}
-          />
-          <Toggle
-            active={quietPreviews}
-            label="Keep previews quiet"
-            onPress={() => setQuietPreviews(!quietPreviews)}
-          />
+          <Text style={styles.sectionTitle}>HOW VIUWU WORKS</Text>
+          <View style={styles.infoPanel}>
+            <Text style={styles.infoTitle}>Your searches are the guide.</Text>
+            <Text style={styles.infoText}>
+              Viuwu requests recent matching videos directly from YouTube. Selecting one opens the
+              official YouTube watch experience on this TV.
+            </Text>
+          </View>
         </View>
         <View style={styles.column}>
-          <Text style={styles.sectionTitle}>VIDEO SOURCES</Text>
-          {providers.map((provider, index) => (
-            <Focusable key={provider.id} onPress={() => undefined} style={styles.provider}>
-              {(focused) => (
-                <>
-                  <View style={[styles.providerMark, { backgroundColor: provider.accent }]}>
-                    <Text style={styles.providerInitial}>{provider.name.at(0)}</Text>
-                  </View>
-                  <View style={styles.providerCopy}>
-                    <Text style={[styles.providerName, focused && styles.providerNameFocused]}>
-                      {provider.name}
-                    </Text>
-                    <Text style={styles.providerStatus}>
-                      {index === 0 ? 'Mock connection ready' : 'Adapter planned'}
-                    </Text>
-                  </View>
-                  <Text style={styles.providerAction}>{index === 0 ? 'CONNECT' : 'SOON'}</Text>
-                </>
-              )}
-            </Focusable>
-          ))}
+          <Text style={styles.sectionTitle}>YOUTUBE ACCOUNT</Text>
+          <Focusable onPress={onDisconnect} style={styles.provider}>
+            {(focused) => (
+              <>
+                <View style={styles.providerMark}>
+                  <Text style={styles.providerInitial}>Y</Text>
+                </View>
+                <View style={styles.providerCopy}>
+                  <Text style={[styles.providerName, focused && styles.providerNameFocused]}>
+                    YouTube
+                  </Text>
+                  <Text style={styles.providerStatus}>Connected with read-only access</Text>
+                </View>
+                <Text style={styles.providerAction}>DISCONNECT</Text>
+              </>
+            )}
+          </Focusable>
           <View style={styles.privacy}>
             <Text style={styles.privacyLabel}>THE SHORT VERSION</Text>
             <Text style={styles.privacyText}>
@@ -110,6 +95,21 @@ const styles = StyleSheet.create({
     letterSpacing: 1.3,
     marginBottom: 13,
   },
+  infoPanel: {
+    backgroundColor: colors.panel,
+    padding: 24,
+  },
+  infoTitle: {
+    color: colors.paper,
+    fontSize: 18,
+    fontWeight: '800',
+  },
+  infoText: {
+    color: '#92899a',
+    fontSize: 13,
+    lineHeight: 20,
+    marginTop: 10,
+  },
   provider: {
     alignItems: 'center',
     backgroundColor: colors.panel,
@@ -125,6 +125,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginRight: 15,
     width: 46,
+    backgroundColor: '#ff0033',
   },
   providerInitial: {
     color: colors.paper,

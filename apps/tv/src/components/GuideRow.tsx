@@ -7,7 +7,7 @@ import { VideoCard } from './VideoCard';
 interface GuideRowProps {
   row: GuideRowModel;
   isFirst: boolean;
-  onSelectVideo: (title: string) => void;
+  onSelectVideo: (videoId: string) => void;
 }
 
 export function GuideRow({ row, isFirst, onSelectVideo }: GuideRowProps) {
@@ -16,10 +16,10 @@ export function GuideRow({ row, isFirst, onSelectVideo }: GuideRowProps) {
       <View style={[styles.channel, { borderLeftColor: row.channel.accent }]}>
         <Text style={styles.callSign}>{row.channel.callSign}</Text>
         <Text numberOfLines={2} style={styles.channelName}>
-          {row.search.name}
+          {row.channel.name}
         </Text>
         <Text numberOfLines={1} style={styles.query}>
-          “{row.search.query}”
+          “{row.channel.query}”
         </Text>
       </View>
       <ScrollView
@@ -31,10 +31,15 @@ export function GuideRow({ row, isFirst, onSelectVideo }: GuideRowProps) {
           <VideoCard
             hasTVPreferredFocus={isFirst && index === 0}
             key={video.id}
-            onPress={() => onSelectVideo(video.title)}
+            onPress={() => onSelectVideo(video.youtubeVideoId)}
             video={video}
           />
         ))}
+        {row.videos.length === 0 && (
+          <View style={styles.noResults}>
+            <Text style={styles.noResultsText}>No recent YouTube matches.</Text>
+          </View>
+        )}
       </ScrollView>
     </View>
   );
@@ -74,5 +79,16 @@ const styles = StyleSheet.create({
   videoList: {
     paddingHorizontal: 10,
     paddingVertical: 7,
+  },
+  noResults: {
+    alignItems: 'center',
+    backgroundColor: '#15111b',
+    height: 184,
+    justifyContent: 'center',
+    width: 520,
+  },
+  noResultsText: {
+    color: '#746c7a',
+    fontSize: 14,
   },
 });

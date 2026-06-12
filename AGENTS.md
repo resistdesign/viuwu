@@ -51,7 +51,8 @@ Do not assume an uncommitted file is disposable.
 
 ## Engineering Rules
 
-- Keep the domain provider-neutral. YouTube is one adapter, never the core model.
+- Keep the domain explicitly YouTube-focused. Video identifiers and API behavior may be
+  YouTube-specific.
 - Treat TV focus behavior, ten-foot readability, and remote navigation as primary UX.
 - Reuse `@viuwu/brand` tokens and `@viuwu/core` entities across surfaces.
 - Prefer narrow components and explicit data flow over framework-heavy abstraction.

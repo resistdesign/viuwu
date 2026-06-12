@@ -45,7 +45,13 @@ jobs:
         run: npm ci
 
       - name: Generate Android TV project
-        run: npm run prebuild:tv --workspace @viuwu/tv
+        env:
+          EXPO_PUBLIC_YOUTUBE_TV_CLIENT_ID: ${{ secrets.VIUWU_YOUTUBE_TV_CLIENT_ID }}
+          EXPO_PUBLIC_YOUTUBE_TV_CLIENT_SECRET: ${{ secrets.VIUWU_YOUTUBE_TV_CLIENT_SECRET }}
+        run: |
+          test -n "$EXPO_PUBLIC_YOUTUBE_TV_CLIENT_ID"
+          test -n "$EXPO_PUBLIC_YOUTUBE_TV_CLIENT_SECRET"
+          npm run prebuild:tv --workspace @viuwu/tv
 
       - name: Set up Java
         uses: actions/setup-java@v4
@@ -64,6 +70,8 @@ jobs:
       - name: Build signed release APK
         env:
           NODE_ENV: production
+          EXPO_PUBLIC_YOUTUBE_TV_CLIENT_ID: ${{ secrets.VIUWU_YOUTUBE_TV_CLIENT_ID }}
+          EXPO_PUBLIC_YOUTUBE_TV_CLIENT_SECRET: ${{ secrets.VIUWU_YOUTUBE_TV_CLIENT_SECRET }}
           VIUWU_RELEASE_STORE_FILE: viuwu-release.jks
           VIUWU_RELEASE_STORE_PASSWORD: ${{ secrets.VIUWU_ANDROID_STORE_PASSWORD }}
           VIUWU_RELEASE_KEY_ALIAS: ${{ secrets.VIUWU_ANDROID_KEY_ALIAS }}
@@ -83,16 +91,17 @@ jobs:
           cp "$APK" "viuwu-${RELEASE_TAG}-android-tv.apk"
           shasum -a 256 "viuwu-${RELEASE_TAG}-android-tv.apk" > SHA256SUMS.txt
 
-      - name: Publish GitHub prerelease
+      - name: Publish GitHub release
         env:
           GH_TOKEN: ${{ github.token }}
           RELEASE_TAG: ${{ steps.release.outputs.tag }}
         run: |
           cat > /tmp/release-notes.md <<EOF
-          Android TV preview of Viuwu's user-controlled guide.
+          Production Android TV release of Viuwu's user-controlled guide.
 
-          This release is installable and signed for upgrades, but it uses mock guide data. YouTube
-          search, account connection, and video playback are not implemented yet.
+          This release is installable and signed for upgrades. First launch requires connecting a
+          YouTube account using Google's TV device authorization flow. User-created search channels
+          load live YouTube results, and selecting a result opens playback in YouTube TV.
 
           Install with:
 
@@ -107,7 +116,7 @@ jobs:
               SHA256SUMS.txt \
               --clobber
             gh release edit "$RELEASE_TAG" \
-              --prerelease \
+              --prerelease=false \
               --title "Viuwu ${RELEASE_TAG}" \
               --notes-file /tmp/release-notes.md
           else
@@ -115,7 +124,6 @@ jobs:
               "viuwu-${RELEASE_TAG}-android-tv.apk" \
               SHA256SUMS.txt \
               --verify-tag \
-              --prerelease \
               --title "Viuwu ${RELEASE_TAG}" \
               --notes-file /tmp/release-notes.md
           fi

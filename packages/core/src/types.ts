@@ -1,46 +1,26 @@
-export type ProviderId = string;
-
-export interface VideoProvider {
-  id: ProviderId;
-  name: string;
-  accent: string;
-  capabilities: Array<'search' | 'subscriptions' | 'history'>;
-}
-
-export interface SavedSearch {
+export interface UserChannel {
   id: string;
   name: string;
   query: string;
-  providerIds: ProviderId[];
-  createdAt: string;
-}
-
-export interface SearchChannel {
-  id: string;
-  savedSearchId: string;
   callSign: string;
   position: number;
   enabled: boolean;
   accent: string;
+  createdAt: string;
 }
 
 export interface VideoItem {
   id: string;
-  providerId: ProviderId;
-  providerVideoId: string;
+  youtubeVideoId: string;
   title: string;
   creator: string;
   duration: string;
   publishedLabel: string;
-  artwork: {
-    background: string;
-    motif: 'orbit' | 'waves' | 'grid' | 'burst' | 'rings';
-  };
+  thumbnailUrl: string;
 }
 
 export interface GuideRow {
-  channel: SearchChannel;
-  search: SavedSearch;
+  channel: UserChannel;
   videos: VideoItem[];
 }
 
