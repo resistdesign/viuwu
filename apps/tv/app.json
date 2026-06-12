@@ -8,13 +8,23 @@
     "userInterfaceStyle": "dark",
     "android": {
       "package": "design.resist.viuwu",
+      "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#0b0910"
       }
     },
     "plugins": [
-      "@react-native-tvos/config-tv",
+      [
+        "@react-native-tvos/config-tv",
+        {
+          "isTV": true,
+          "androidTVRequired": true,
+          "androidTVBanner": "./assets/tv-banner.png",
+          "androidTVIcon": "./assets/icon.png"
+        }
+      ],
+      "./plugins/withReleaseSigning.cjs",
       [
         "expo-splash-screen",
         {

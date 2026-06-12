@@ -12,6 +12,8 @@
     "dev": "npm run dev --workspace @viuwu/site",
     "dev:site": "npm run dev --workspace @viuwu/site",
     "dev:tv": "npm run start --workspace @viuwu/tv",
+    "build:tv:preview": "npm run build:preview --workspace @viuwu/tv",
+    "build:tv:release": "npm run build:release --workspace @viuwu/tv",
     "build": "npm run build --workspace @viuwu/site",
     "format": "prettier --write .",
     "format:check": "prettier --check .",

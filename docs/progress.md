@@ -16,10 +16,12 @@ First milestone implementation is complete and live on `main`.
 - Landing site deployed successfully at `https://viuwu.resist.design/`; HTTP redirects to HTTPS.
 - Formatting, linting, type checks, core tests, site build, responsive browser review, and Android
   TV native prebuild completed.
+- Preview APK built, installed, launched, and visually verified on a Philips 4K Android 11 TV at
+  `192.168.1.170`.
 
 ## Active
 
-- No active bootstrap work.
+- Publish the first signed Android TV preview release.
 
 ## Next
 

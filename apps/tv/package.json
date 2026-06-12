@@ -6,7 +6,9 @@
   "scripts": {
     "start": "expo start --dev-client",
     "android": "expo run:android",
-    "prebuild:tv": "EXPO_TV=1 expo prebuild --clean",
+    "prebuild:tv": "expo prebuild --platform android --clean",
+    "build:preview": "npm run prebuild:tv && cd android && ./gradlew assembleDebug --no-daemon",
+    "build:release": "npm run prebuild:tv && cd android && ./gradlew assembleRelease --no-daemon",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
