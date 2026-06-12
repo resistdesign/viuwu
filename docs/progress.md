@@ -22,11 +22,13 @@ YouTube-only first-launch authorization is in active development.
   implemented.
 - Signed `0.1.1` APK built and installed on the physical TV; missing-credential gate visually
   verified at 1920x1080.
+- Google TV OAuth client ID configured in a git-ignored local environment file and GitHub Actions.
+- Google's device endpoint accepted the credential, and the signed app displayed a live activation
+  code on the physical TV.
 
 ## Active
 
-- Configure the Google OAuth client ID for release builds and validate a successful account
-  connection.
+- Complete user consent and validate session persistence after a successful account connection.
 
 ## Next
 
@@ -37,8 +39,8 @@ YouTube-only first-launch authorization is in active development.
 
 ## Known Blockers
 
-- Successful authorization validation requires a Google OAuth client configured for TVs and Limited
-  Input devices.
+- Completing authorization requires the user to approve read-only YouTube access in their Google
+  account.
 - Expo Doctor reports the core `react-native` package nested under
   `@react-native-tvos/virtualized-lists`; Android TV prebuild succeeds and this is tracked as an
   upstream TV-fork packaging warning.

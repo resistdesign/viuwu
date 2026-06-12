@@ -4,6 +4,7 @@ dist/
 .DS_Store
 *.log
 coverage/
+.env*
+!.env.example
 apps/tv/android/
 apps/tv/ios/
-

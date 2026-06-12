@@ -47,6 +47,9 @@ Store that client ID in the GitHub Actions secret `VIUWU_YOUTUBE_TV_CLIENT_ID`. 
 it to Expo as `EXPO_PUBLIC_YOUTUBE_TV_CLIENT_ID`; OAuth client IDs are application identifiers, not
 client secrets. Never add a Google OAuth client secret to the app.
 
+For local builds, copy `apps/tv/.env.example` to `apps/tv/.env.local` and set the client ID there.
+All `.env*` files except `.env.example` are ignored by git.
+
 The app requests read-only YouTube access and stores access and refresh tokens with Expo Secure
 Store. Live search may use the OAuth access token with the YouTube Data API; an API key alone cannot
 connect a user's account.
