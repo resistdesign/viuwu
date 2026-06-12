@@ -29,7 +29,7 @@ export function GuideScreen({ notice, onSelectVideo }: GuideScreenProps) {
       {notice && (
         <View style={styles.notice}>
           <Text style={styles.noticeText}>
-            Queued “{notice}” · playback arrives with provider sync.
+            Queued “{notice}” · YouTube playback is coming next.
           </Text>
         </View>
       )}

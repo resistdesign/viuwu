@@ -2,8 +2,8 @@
 
 ## Release Status
 
-GitHub releases publish a signed Android TV APK. Preview releases use mock guide data and do not
-yet call YouTube or play videos.
+GitHub releases publish a signed Android TV APK. First launch requires YouTube authorization.
+Preview guide rows still use fixtures and do not yet play videos.
 
 ## Versioning
 
@@ -35,20 +35,21 @@ The release key is not committed. GitHub Actions requires:
 - `VIUWU_ANDROID_STORE_PASSWORD`
 - `VIUWU_ANDROID_KEY_ALIAS`
 - `VIUWU_ANDROID_KEY_PASSWORD`
+- `VIUWU_YOUTUBE_TV_CLIENT_ID`
 
 The key must be backed up permanently. Losing it prevents future APKs from upgrading installed
 copies.
 
 ## YouTube Credentials
 
-The current preview uses fixtures and needs no API key.
+Create an OAuth 2.0 client in Google Cloud with application type **TVs and Limited Input devices**.
+Store that client ID in the GitHub Actions secret `VIUWU_YOUTUBE_TV_CLIENT_ID`. The workflow exposes
+it to Expo as `EXPO_PUBLIC_YOUTUBE_TV_CLIENT_ID`; OAuth client IDs are application identifiers, not
+client secrets. Never add a Google OAuth client secret to the app.
 
-A live public-search adapter will require a YouTube Data API v3 key. The key will be present in the
-APK, so it must be restricted in Google Cloud to the Android package `design.resist.viuwu`, the
-production signing certificate SHA-1, and only the required YouTube API. User account data,
-subscriptions, and private history require OAuth rather than an API key.
-
-Do not commit credentials or place an unrestricted key in Expo public configuration.
+The app requests read-only YouTube access and stores access and refresh tokens with Expo Secure
+Store. Live search may use the OAuth access token with the YouTube Data API; an API key alone cannot
+connect a user's account.
 
 ## Physical TV Installation
 

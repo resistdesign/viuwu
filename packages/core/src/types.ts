@@ -1,17 +1,7 @@
-export type ProviderId = string;
-
-export interface VideoProvider {
-  id: ProviderId;
-  name: string;
-  accent: string;
-  capabilities: Array<'search' | 'subscriptions' | 'history'>;
-}
-
 export interface SavedSearch {
   id: string;
   name: string;
   query: string;
-  providerIds: ProviderId[];
   createdAt: string;
 }
 
@@ -26,8 +16,7 @@ export interface SearchChannel {
 
 export interface VideoItem {
   id: string;
-  providerId: ProviderId;
-  providerVideoId: string;
+  youtubeVideoId: string;
   title: string;
   creator: string;
   duration: string;

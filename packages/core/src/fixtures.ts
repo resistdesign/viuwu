@@ -1,48 +1,29 @@
 import { buildGuide } from './guide';
-import type { SavedSearch, SearchChannel, VideoItem, VideoProvider } from './types';
-
-export const providers: VideoProvider[] = [
-  {
-    id: 'youtube',
-    name: 'YouTube',
-    accent: '#ff806b',
-    capabilities: ['search', 'subscriptions', 'history'],
-  },
-  {
-    id: 'peertube',
-    name: 'PeerTube',
-    accent: '#8f5dff',
-    capabilities: ['search'],
-  },
-];
+import type { SavedSearch, SearchChannel, VideoItem } from './types';
 
 export const savedSearches: SavedSearch[] = [
   {
     id: 'search-design',
     name: 'Design rabbit holes',
     query: 'graphic design studio tours process',
-    providerIds: ['youtube'],
     createdAt: '2026-06-01',
   },
   {
     id: 'search-sound',
     name: 'Small room, big sound',
     query: 'tiny live music session',
-    providerIds: ['youtube', 'peertube'],
     createdAt: '2026-06-02',
   },
   {
     id: 'search-food',
     name: 'Make this tonight',
     query: 'quick vegetarian weeknight recipe',
-    providerIds: ['youtube'],
     createdAt: '2026-06-03',
   },
   {
     id: 'search-making',
     name: 'Made by hand',
     query: 'ceramics printmaking woodworking process',
-    providerIds: ['youtube', 'peertube'],
     createdAt: '2026-06-04',
   },
 ];
@@ -91,8 +72,7 @@ const video = (
   motif: VideoItem['artwork']['motif'],
 ): VideoItem => ({
   id,
-  providerId: 'youtube',
-  providerVideoId: id,
+  youtubeVideoId: id,
   title,
   creator,
   duration,

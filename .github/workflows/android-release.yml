@@ -45,7 +45,11 @@ jobs:
         run: npm ci
 
       - name: Generate Android TV project
-        run: npm run prebuild:tv --workspace @viuwu/tv
+        env:
+          EXPO_PUBLIC_YOUTUBE_TV_CLIENT_ID: ${{ secrets.VIUWU_YOUTUBE_TV_CLIENT_ID }}
+        run: |
+          test -n "$EXPO_PUBLIC_YOUTUBE_TV_CLIENT_ID"
+          npm run prebuild:tv --workspace @viuwu/tv
 
       - name: Set up Java
         uses: actions/setup-java@v4
@@ -64,6 +68,7 @@ jobs:
       - name: Build signed release APK
         env:
           NODE_ENV: production
+          EXPO_PUBLIC_YOUTUBE_TV_CLIENT_ID: ${{ secrets.VIUWU_YOUTUBE_TV_CLIENT_ID }}
           VIUWU_RELEASE_STORE_FILE: viuwu-release.jks
           VIUWU_RELEASE_STORE_PASSWORD: ${{ secrets.VIUWU_ANDROID_STORE_PASSWORD }}
           VIUWU_RELEASE_KEY_ALIAS: ${{ secrets.VIUWU_ANDROID_KEY_ALIAS }}
@@ -91,8 +96,9 @@ jobs:
           cat > /tmp/release-notes.md <<EOF
           Android TV preview of Viuwu's user-controlled guide.
 
-          This release is installable and signed for upgrades, but it uses mock guide data. YouTube
-          search, account connection, and video playback are not implemented yet.
+          This release is installable and signed for upgrades. First launch requires connecting a
+          YouTube account using Google's TV device authorization flow. Guide results and playback
+          are still preview functionality.
 
           Install with:
 

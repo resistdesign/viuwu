@@ -6,7 +6,7 @@ The npm-workspace monorepo has two applications and two shared packages:
 
 - `apps/tv` owns native presentation, remote focus, and screen navigation.
 - `apps/site` owns public product communication and GitHub Pages output.
-- `packages/core` owns entities, provider contracts, guide construction, and fixtures.
+- `packages/core` owns YouTube guide entities, guide construction, and fixtures.
 - `packages/brand` owns color, spacing, radius, and asset conventions.
 
 Applications may depend on shared packages. Shared packages do not depend on applications.
@@ -14,13 +14,9 @@ Applications may depend on shared packages. Shared packages do not depend on app
 ## Domain Model
 
 `SavedSearch` stores user intent. `SearchChannel` gives that intent a place and state in the guide.
-`VideoProvider` describes a source without leaking a vendor API into the model. `VideoItem` is the
-normalized result. `GuideRow` combines a channel with results, and `UserGuide` is the ordered home
-experience.
-
-Live providers will implement a search adapter that normalizes vendor results before guide
-construction. Persistence should store stable user intent and provider identifiers, not raw API
-responses.
+`VideoItem` identifies a YouTube result. `GuideRow` combines a channel with results, and `UserGuide`
+is the ordered home experience. Persistence should store stable user intent and YouTube video
+identifiers, not raw API responses.
 
 ## TV App
 
@@ -32,8 +28,9 @@ Tagged releases regenerate the Android project in GitHub Actions and sign the AP
 release key stored only in repository secrets. This keeps the native project reproducible while
 preserving a stable Android upgrade identity.
 
-The first milestone uses local screen state and mock data. Screen, navigation, guide-row, and
-focusable-card boundaries are already separated for later routing and data integration.
+The app requires a YouTube account on first launch. Google's TV device authorization flow stores
+tokens in the platform secure store and refreshes an existing session at startup. Guide content is
+still fixture-backed until YouTube search and playback are connected.
 
 ## Site And Delivery
 

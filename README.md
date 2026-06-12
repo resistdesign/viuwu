@@ -45,7 +45,7 @@ npm run check
 
 - `apps/tv`: Expo SDK 56 app using the React Native TV fork.
 - `apps/site`: Vite-built static landing site deployed to GitHub Pages.
-- `packages/core`: provider-neutral guide model and first-milestone fixtures.
+- `packages/core`: YouTube guide model and first-milestone fixtures.
 - `packages/brand`: shared visual tokens and source brand assets.
 - `docs`: product, architecture, decisions, progress, and GitHub operations.
 

@@ -48,7 +48,7 @@ export function ChannelsScreen() {
                     </Text>
                     <Text style={styles.query}>{search?.query}</Text>
                   </View>
-                  <Text style={styles.providerCount}>{search?.providerIds.length} SOURCE</Text>
+                  <Text style={styles.youtubeLabel}>YOUTUBE</Text>
                   <View style={[styles.state, active && styles.stateActive]}>
                     <Text style={[styles.stateText, active && styles.stateTextActive]}>
                       {active ? 'LIVE' : 'PAUSED'}
@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
     fontSize: 11,
     marginTop: 5,
   },
-  providerCount: {
+  youtubeLabel: {
     color: '#6f6675',
     fontSize: 9,
     fontWeight: '800',

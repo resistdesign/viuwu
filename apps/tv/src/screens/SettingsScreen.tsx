@@ -2,11 +2,13 @@ import { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { colors } from '@viuwu/brand';
-import { providers } from '@viuwu/core';
-
 import { Focusable, Toggle } from '../components/Focusable';
 
-export function SettingsScreen() {
+interface SettingsScreenProps {
+  onDisconnect: () => void;
+}
+
+export function SettingsScreen({ onDisconnect }: SettingsScreenProps) {
   const [autoplay, setAutoplay] = useState(false);
   const [freshOnly, setFreshOnly] = useState(true);
   const [quietPreviews, setQuietPreviews] = useState(true);
@@ -38,27 +40,23 @@ export function SettingsScreen() {
           />
         </View>
         <View style={styles.column}>
-          <Text style={styles.sectionTitle}>VIDEO SOURCES</Text>
-          {providers.map((provider, index) => (
-            <Focusable key={provider.id} onPress={() => undefined} style={styles.provider}>
-              {(focused) => (
-                <>
-                  <View style={[styles.providerMark, { backgroundColor: provider.accent }]}>
-                    <Text style={styles.providerInitial}>{provider.name.at(0)}</Text>
-                  </View>
-                  <View style={styles.providerCopy}>
-                    <Text style={[styles.providerName, focused && styles.providerNameFocused]}>
-                      {provider.name}
-                    </Text>
-                    <Text style={styles.providerStatus}>
-                      {index === 0 ? 'Mock connection ready' : 'Adapter planned'}
-                    </Text>
-                  </View>
-                  <Text style={styles.providerAction}>{index === 0 ? 'CONNECT' : 'SOON'}</Text>
-                </>
-              )}
-            </Focusable>
-          ))}
+          <Text style={styles.sectionTitle}>YOUTUBE ACCOUNT</Text>
+          <Focusable onPress={onDisconnect} style={styles.provider}>
+            {(focused) => (
+              <>
+                <View style={styles.providerMark}>
+                  <Text style={styles.providerInitial}>Y</Text>
+                </View>
+                <View style={styles.providerCopy}>
+                  <Text style={[styles.providerName, focused && styles.providerNameFocused]}>
+                    YouTube
+                  </Text>
+                  <Text style={styles.providerStatus}>Connected with read-only access</Text>
+                </View>
+                <Text style={styles.providerAction}>DISCONNECT</Text>
+              </>
+            )}
+          </Focusable>
           <View style={styles.privacy}>
             <Text style={styles.privacyLabel}>THE SHORT VERSION</Text>
             <Text style={styles.privacyText}>
@@ -125,6 +123,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginRight: 15,
     width: 46,
+    backgroundColor: '#ff0033',
   },
   providerInitial: {
     color: colors.paper,
