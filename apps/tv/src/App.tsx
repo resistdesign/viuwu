@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { ActivityIndicator, SafeAreaView, StatusBar, StyleSheet, View } from 'react-native';
 
 import { colors } from '@viuwu/brand';
+import type { UserChannel } from '@viuwu/core';
 
 import { SideNav, type ScreenName } from './components/SideNav';
 import { ChannelsScreen } from './screens/ChannelsScreen';
@@ -13,12 +14,15 @@ import {
   restoreYouTubeSession,
   type YouTubeSession,
 } from './services/youtubeAuth';
+import { loadChannels, saveChannels } from './services/channelStore';
+import { clearYouTubeGuideCache } from './services/youtubeData';
 
 export default function App() {
   const [activeScreen, setActiveScreen] = useState<ScreenName>('guide');
-  const [notice, setNotice] = useState<string | null>(null);
   const [session, setSession] = useState<YouTubeSession | null>(null);
   const [restoringSession, setRestoringSession] = useState(true);
+  const [channels, setChannels] = useState<UserChannel[]>([]);
+  const [loadingChannels, setLoadingChannels] = useState(true);
 
   useEffect(() => {
     void restoreYouTubeSession()
@@ -27,7 +31,21 @@ export default function App() {
       .finally(() => setRestoringSession(false));
   }, []);
 
-  if (restoringSession) {
+  useEffect(() => {
+    if (!session) return;
+    setLoadingChannels(true);
+    void loadChannels()
+      .then(setChannels)
+      .finally(() => setLoadingChannels(false));
+  }, [session]);
+
+  const updateChannels = (nextChannels: UserChannel[]) => {
+    setChannels(nextChannels);
+    void saveChannels(nextChannels);
+    void clearYouTubeGuideCache();
+  };
+
+  if (restoringSession || (session && loadingChannels)) {
     return (
       <SafeAreaView style={styles.safeArea}>
         <StatusBar hidden />
@@ -51,15 +69,17 @@ export default function App() {
     <SafeAreaView style={styles.safeArea}>
       <StatusBar hidden />
       <View style={styles.app}>
-        <SideNav
-          activeScreen={activeScreen}
-          onNavigate={(screen) => {
-            setNotice(null);
-            setActiveScreen(screen);
-          }}
-        />
-        {activeScreen === 'guide' && <GuideScreen notice={notice} onSelectVideo={setNotice} />}
-        {activeScreen === 'channels' && <ChannelsScreen />}
+        <SideNav activeScreen={activeScreen} onNavigate={setActiveScreen} />
+        {activeScreen === 'guide' && (
+          <GuideScreen
+            channels={channels}
+            onOpenChannels={() => setActiveScreen('channels')}
+            session={session}
+          />
+        )}
+        {activeScreen === 'channels' && (
+          <ChannelsScreen channels={channels} onChange={updateChannels} />
+        )}
         {activeScreen === 'settings' && (
           <SettingsScreen
             onDisconnect={() => {

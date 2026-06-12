@@ -3,7 +3,8 @@
 ## Release Status
 
 GitHub releases publish a signed Android TV APK. First launch requires YouTube authorization.
-Preview guide rows still use fixtures and do not yet play videos.
+Users create persisted search channels, guide rows load live YouTube results, and selecting a video
+opens playback in the YouTube TV application.
 
 ## Versioning
 

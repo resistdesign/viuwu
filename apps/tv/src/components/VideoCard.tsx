@@ -1,9 +1,8 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, Text, View } from 'react-native';
 
 import { colors, radii } from '@viuwu/brand';
 import type { VideoItem } from '@viuwu/core';
 
-import { Artwork } from './Artwork';
 import { Focusable } from './Focusable';
 
 interface VideoCardProps {
@@ -23,7 +22,7 @@ export function VideoCard({ video, hasTVPreferredFocus, onPress }: VideoCardProp
     >
       {(focused) => (
         <>
-          <Artwork artwork={video.artwork} />
+          <Image resizeMode="cover" source={{ uri: video.thumbnailUrl }} style={styles.thumbnail} />
           <View style={styles.copy}>
             <Text numberOfLines={1} style={[styles.title, focused && styles.titleFocused]}>
               {video.title}
@@ -34,6 +33,7 @@ export function VideoCard({ video, hasTVPreferredFocus, onPress }: VideoCardProp
               </Text>
               <Text style={styles.duration}>{video.duration}</Text>
             </View>
+            <Text style={styles.published}>{video.publishedLabel}</Text>
           </View>
           {focused && (
             <View style={styles.playBadge}>
@@ -56,6 +56,11 @@ const styles = StyleSheet.create({
   },
   focused: {
     backgroundColor: colors.panelLifted,
+  },
+  thumbnail: {
+    backgroundColor: '#201a28',
+    height: 142,
+    width: '100%',
   },
   copy: {
     paddingHorizontal: 14,
@@ -85,6 +90,11 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     marginLeft: 8,
   },
+  published: {
+    color: '#675f6d',
+    fontSize: 9,
+    marginTop: 6,
+  },
   playBadge: {
     alignItems: 'center',
     backgroundColor: colors.paper,
@@ -93,7 +103,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     position: 'absolute',
     right: 12,
-    top: 64,
+    top: 78,
     width: 42,
   },
   playGlyph: {

@@ -1,17 +1,12 @@
-export interface SavedSearch {
+export interface UserChannel {
   id: string;
   name: string;
   query: string;
-  createdAt: string;
-}
-
-export interface SearchChannel {
-  id: string;
-  savedSearchId: string;
   callSign: string;
   position: number;
   enabled: boolean;
   accent: string;
+  createdAt: string;
 }
 
 export interface VideoItem {
@@ -21,15 +16,11 @@ export interface VideoItem {
   creator: string;
   duration: string;
   publishedLabel: string;
-  artwork: {
-    background: string;
-    motif: 'orbit' | 'waves' | 'grid' | 'burst' | 'rings';
-  };
+  thumbnailUrl: string;
 }
 
 export interface GuideRow {
-  channel: SearchChannel;
-  search: SavedSearch;
+  channel: UserChannel;
   videos: VideoItem[];
 }
 

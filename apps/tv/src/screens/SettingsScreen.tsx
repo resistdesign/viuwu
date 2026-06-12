@@ -1,18 +1,13 @@
-import { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { colors } from '@viuwu/brand';
-import { Focusable, Toggle } from '../components/Focusable';
+import { Focusable } from '../components/Focusable';
 
 interface SettingsScreenProps {
   onDisconnect: () => void;
 }
 
 export function SettingsScreen({ onDisconnect }: SettingsScreenProps) {
-  const [autoplay, setAutoplay] = useState(false);
-  const [freshOnly, setFreshOnly] = useState(true);
-  const [quietPreviews, setQuietPreviews] = useState(true);
-
   return (
     <View style={styles.screen}>
       <Text style={styles.eyebrow}>SETTINGS</Text>
@@ -22,22 +17,14 @@ export function SettingsScreen({ onDisconnect }: SettingsScreenProps) {
       </Text>
       <View style={styles.columns}>
         <View style={styles.column}>
-          <Text style={styles.sectionTitle}>PLAYBACK</Text>
-          <Toggle
-            active={autoplay}
-            label="Autoplay the next match"
-            onPress={() => setAutoplay(!autoplay)}
-          />
-          <Toggle
-            active={freshOnly}
-            label="Prefer unseen videos"
-            onPress={() => setFreshOnly(!freshOnly)}
-          />
-          <Toggle
-            active={quietPreviews}
-            label="Keep previews quiet"
-            onPress={() => setQuietPreviews(!quietPreviews)}
-          />
+          <Text style={styles.sectionTitle}>HOW VIUWU WORKS</Text>
+          <View style={styles.infoPanel}>
+            <Text style={styles.infoTitle}>Your searches are the guide.</Text>
+            <Text style={styles.infoText}>
+              Viuwu requests recent matching videos directly from YouTube. Selecting one opens the
+              official YouTube watch experience on this TV.
+            </Text>
+          </View>
         </View>
         <View style={styles.column}>
           <Text style={styles.sectionTitle}>YOUTUBE ACCOUNT</Text>
@@ -107,6 +94,21 @@ const styles = StyleSheet.create({
     fontWeight: '900',
     letterSpacing: 1.3,
     marginBottom: 13,
+  },
+  infoPanel: {
+    backgroundColor: colors.panel,
+    padding: 24,
+  },
+  infoTitle: {
+    color: colors.paper,
+    fontSize: 18,
+    fontWeight: '800',
+  },
+  infoText: {
+    color: '#92899a',
+    fontSize: 13,
+    lineHeight: 20,
+    marginTop: 10,
   },
   provider: {
     alignItems: 'center',

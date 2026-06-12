@@ -24,8 +24,8 @@ Settings exposes the connected YouTube account and playback preferences without 
 
 First launch requires connecting YouTube through Google's TV device authorization flow. The TV
 shows a QR code that opens Google's account selection and consent page with the device code
-prefilled, plus a manual code fallback. Mock data still represents the guide interaction model;
-persistence, live search, video playback, and result refresh are later milestones.
+prefilled, plus a manual code fallback. After connection, the user creates named search channels.
+Viuwu persists those channels, loads current YouTube results, and opens selected videos in YouTube.
 
 ## Platform
 

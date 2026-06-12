@@ -1,15 +1,33 @@
 import { useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Modal, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 
 import { colors, radii } from '@viuwu/brand';
-import { channels, savedSearches } from '@viuwu/core';
+import type { UserChannel } from '@viuwu/core';
 
 import { Focusable } from '../components/Focusable';
+import { createChannel } from '../services/channelStore';
 
-export function ChannelsScreen() {
-  const [enabled, setEnabled] = useState<Record<string, boolean>>(
-    Object.fromEntries(channels.map((channel) => [channel.id, channel.enabled])),
-  );
+interface ChannelsScreenProps {
+  channels: UserChannel[];
+  onChange: (channels: UserChannel[]) => void;
+}
+
+export function ChannelsScreen({ channels, onChange }: ChannelsScreenProps) {
+  const [showCreate, setShowCreate] = useState(false);
+  const [name, setName] = useState('');
+  const [query, setQuery] = useState('');
+
+  const closeCreate = () => {
+    setShowCreate(false);
+    setName('');
+    setQuery('');
+  };
+
+  const addChannel = () => {
+    if (!name.trim() || !query.trim()) return;
+    onChange([...channels, createChannel(name, query, channels.length)]);
+    closeCreate();
+  };
 
   return (
     <View style={styles.screen}>
@@ -17,53 +35,105 @@ export function ChannelsScreen() {
       <View style={styles.headingRow}>
         <View>
           <Text style={styles.title}>Made by you.</Text>
-          <Text style={styles.subtitle}>Pause a row or make room for the next obsession.</Text>
+          <Text style={styles.subtitle}>Each channel is a saved YouTube search you control.</Text>
         </View>
-        <Focusable onPress={() => undefined} style={styles.addButton}>
-          {(focused) => (
-            <Text style={[styles.addButtonText, focused && styles.addButtonFocused]}>
-              + New channel
-            </Text>
-          )}
+        <Focusable onPress={() => setShowCreate(true)} style={styles.addButton}>
+          <Text style={styles.addButtonText}>+ New channel</Text>
         </Focusable>
       </View>
-      <View style={styles.list}>
-        {channels.map((channel, index) => {
-          const search = savedSearches.find((candidate) => candidate.id === channel.savedSearchId);
-          const active = enabled[channel.id] ?? false;
 
-          return (
-            <Focusable
-              key={channel.id}
-              onPress={() => setEnabled((current) => ({ ...current, [channel.id]: !active }))}
-              style={styles.channel}
-            >
-              {(focused) => (
-                <>
-                  <Text style={styles.position}>{String(index + 1).padStart(2, '0')}</Text>
-                  <View style={[styles.color, { backgroundColor: channel.accent }]} />
-                  <View style={styles.channelCopy}>
-                    <Text style={[styles.channelName, focused && styles.channelNameFocused]}>
-                      {search?.name}
-                    </Text>
-                    <Text style={styles.query}>{search?.query}</Text>
-                  </View>
-                  <Text style={styles.youtubeLabel}>YOUTUBE</Text>
-                  <View style={[styles.state, active && styles.stateActive]}>
-                    <Text style={[styles.stateText, active && styles.stateTextActive]}>
-                      {active ? 'LIVE' : 'PAUSED'}
-                    </Text>
-                  </View>
-                  <Text style={styles.handle}>≡</Text>
-                </>
-              )}
-            </Focusable>
-          );
-        })}
-      </View>
-      <Text style={styles.hint}>
-        Select a channel to pause it. Reordering and search editing land with persistence.
-      </Text>
+      {channels.length === 0 ? (
+        <View style={styles.empty}>
+          <Text style={styles.emptyTitle}>No channels yet.</Text>
+          <Text style={styles.emptyCopy}>
+            Create one, name it, and enter the exact YouTube search that should fill its row.
+          </Text>
+        </View>
+      ) : (
+        <ScrollView contentContainerStyle={styles.list} showsVerticalScrollIndicator={false}>
+          {channels.map((channel, index) => (
+            <View key={channel.id} style={styles.channel}>
+              <Text style={styles.position}>{String(index + 1).padStart(2, '0')}</Text>
+              <View style={[styles.color, { backgroundColor: channel.accent }]} />
+              <View style={styles.channelCopy}>
+                <Text style={styles.channelName}>{channel.name}</Text>
+                <Text style={styles.query}>{channel.query}</Text>
+              </View>
+              <Focusable
+                onPress={() =>
+                  onChange(
+                    channels.map((candidate) =>
+                      candidate.id === channel.id
+                        ? { ...candidate, enabled: !candidate.enabled }
+                        : candidate,
+                    ),
+                  )
+                }
+                style={[styles.action, channel.enabled && styles.actionActive]}
+              >
+                <Text style={[styles.actionText, channel.enabled && styles.actionTextActive]}>
+                  {channel.enabled ? 'LIVE' : 'PAUSED'}
+                </Text>
+              </Focusable>
+              <Focusable
+                onPress={() =>
+                  onChange(
+                    channels
+                      .filter((candidate) => candidate.id !== channel.id)
+                      .map((candidate, position) => ({ ...candidate, position })),
+                  )
+                }
+                style={styles.remove}
+              >
+                <Text style={styles.removeText}>REMOVE</Text>
+              </Focusable>
+            </View>
+          ))}
+        </ScrollView>
+      )}
+
+      <Modal animationType="fade" onRequestClose={closeCreate} transparent visible={showCreate}>
+        <View style={styles.modalBackdrop}>
+          <View style={styles.modal}>
+            <Text style={styles.modalEyebrow}>NEW CHANNEL</Text>
+            <Text style={styles.modalTitle}>What should this row find?</Text>
+            <Text style={styles.fieldLabel}>CHANNEL NAME</Text>
+            <TextInput
+              autoFocus
+              onChangeText={setName}
+              placeholder="Example: Live sessions"
+              placeholderTextColor="#625a69"
+              style={styles.input}
+              value={name}
+            />
+            <Text style={styles.fieldLabel}>YOUTUBE SEARCH</Text>
+            <TextInput
+              onChangeText={setQuery}
+              onSubmitEditing={addChannel}
+              placeholder="Example: intimate live music session"
+              placeholderTextColor="#625a69"
+              returnKeyType="done"
+              style={styles.input}
+              value={query}
+            />
+            <View style={styles.modalActions}>
+              <Focusable onPress={closeCreate} style={styles.cancelButton}>
+                <Text style={styles.cancelText}>Cancel</Text>
+              </Focusable>
+              <Focusable
+                disabled={!name.trim() || !query.trim()}
+                onPress={addChannel}
+                style={[
+                  styles.saveButton,
+                  (!name.trim() || !query.trim()) && styles.saveButtonDisabled,
+                ]}
+              >
+                <Text style={styles.saveText}>Create channel</Text>
+              </Focusable>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 }
@@ -108,12 +178,30 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '800',
   },
-  addButtonFocused: {
-    color: colors.yellow,
+  empty: {
+    alignItems: 'center',
+    backgroundColor: colors.panel,
+    borderRadius: radii.lg,
+    marginTop: 54,
+    paddingVertical: 80,
+  },
+  emptyTitle: {
+    color: colors.paper,
+    fontSize: 26,
+    fontWeight: '800',
+  },
+  emptyCopy: {
+    color: '#8f8795',
+    fontSize: 14,
+    lineHeight: 21,
+    marginTop: 10,
+    maxWidth: 560,
+    textAlign: 'center',
   },
   list: {
     gap: 14,
-    marginTop: 45,
+    paddingBottom: 50,
+    paddingTop: 38,
   },
   channel: {
     alignItems: 'center',
@@ -143,48 +231,111 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '800',
   },
-  channelNameFocused: {
-    color: colors.paper,
-  },
   query: {
     color: '#776f7d',
     fontSize: 11,
     marginTop: 5,
   },
-  youtubeLabel: {
-    color: '#6f6675',
-    fontSize: 9,
-    fontWeight: '800',
-    letterSpacing: 0.8,
-    marginHorizontal: 25,
-  },
-  state: {
+  action: {
     backgroundColor: '#352c3c',
     borderRadius: radii.pill,
+    marginLeft: 16,
     paddingHorizontal: 12,
-    paddingVertical: 7,
-    width: 72,
+    paddingVertical: 9,
+    width: 80,
   },
-  stateActive: {
+  actionActive: {
     backgroundColor: '#264d43',
   },
-  stateText: {
+  actionText: {
     color: '#8f8497',
     fontSize: 8,
     fontWeight: '900',
     textAlign: 'center',
   },
-  stateTextActive: {
+  actionTextActive: {
     color: colors.mint,
   },
-  handle: {
-    color: '#6d6473',
-    fontSize: 23,
-    marginLeft: 25,
+  remove: {
+    marginLeft: 12,
+    paddingHorizontal: 12,
+    paddingVertical: 9,
   },
-  hint: {
-    color: '#6f6774',
+  removeText: {
+    color: '#b77c83',
+    fontSize: 8,
+    fontWeight: '900',
+  },
+  modalBackdrop: {
+    alignItems: 'center',
+    backgroundColor: 'rgba(6, 5, 9, 0.88)',
+    flex: 1,
+    justifyContent: 'center',
+  },
+  modal: {
+    backgroundColor: colors.panel,
+    borderRadius: radii.lg,
+    padding: 38,
+    width: 720,
+  },
+  modalEyebrow: {
+    color: colors.yellow,
     fontSize: 10,
-    marginTop: 22,
+    fontWeight: '900',
+    letterSpacing: 1.3,
+  },
+  modalTitle: {
+    color: colors.paper,
+    fontSize: 30,
+    fontWeight: '900',
+    marginBottom: 26,
+    marginTop: 8,
+  },
+  fieldLabel: {
+    color: '#8f8795',
+    fontSize: 9,
+    fontWeight: '900',
+    letterSpacing: 1,
+    marginBottom: 7,
+  },
+  input: {
+    backgroundColor: '#0f0c14',
+    borderColor: '#3a3044',
+    borderRadius: radii.sm,
+    borderWidth: 2,
+    color: colors.paper,
+    fontSize: 17,
+    marginBottom: 20,
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+  },
+  modalActions: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    marginTop: 8,
+  },
+  cancelButton: {
+    paddingHorizontal: 20,
+    paddingVertical: 13,
+  },
+  cancelText: {
+    color: '#9c93a2',
+    fontSize: 14,
+    fontWeight: '700',
+  },
+  saveButton: {
+    backgroundColor: colors.purple,
+    borderRadius: radii.pill,
+    marginLeft: 12,
+    paddingHorizontal: 24,
+    paddingVertical: 13,
+  },
+  saveButtonDisabled: {
+    opacity: 0.35,
+  },
+  saveText: {
+    color: colors.paper,
+    fontSize: 14,
+    fontWeight: '800',
   },
 });

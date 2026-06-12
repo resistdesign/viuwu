@@ -6,7 +6,7 @@ The npm-workspace monorepo has two applications and two shared packages:
 
 - `apps/tv` owns native presentation, remote focus, and screen navigation.
 - `apps/site` owns public product communication and GitHub Pages output.
-- `packages/core` owns YouTube guide entities, guide construction, and fixtures.
+- `packages/core` owns YouTube guide entities and guide construction.
 - `packages/brand` owns color, spacing, radius, and asset conventions.
 
 Applications may depend on shared packages. Shared packages do not depend on applications.
@@ -29,8 +29,9 @@ release key stored only in repository secrets. This keeps the native project rep
 preserving a stable Android upgrade identity.
 
 The app requires a YouTube account on first launch. Google's TV device authorization flow stores
-tokens in the platform secure store and refreshes an existing session at startup. Guide content is
-still fixture-backed until YouTube search and playback are connected.
+tokens in the platform secure store and refreshes sessions before API work. User-created channels
+are persisted locally. The guide calls YouTube Data API search and video endpoints, caches results
+for 15 minutes to protect quota, and opens selected videos in the official YouTube TV application.
 
 ## Site And Delivery
 

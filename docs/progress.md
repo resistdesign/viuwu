@@ -2,7 +2,7 @@
 
 ## Current Status
 
-YouTube-only first-launch authorization is in active development.
+The YouTube-only Android TV application is functional end to end on physical hardware.
 
 ## Completed
 
@@ -27,22 +27,27 @@ YouTube-only first-launch authorization is in active development.
   code on the physical TV.
 - First-launch authorization now displays a QR code that opens Google's device page with the
   current code prefilled; the manual URL and code remain as fallback.
+- Removed all fixture data and fixture exports from the applications and core package.
+- Added persisted user-created channels and production empty, loading, and API error states.
+- Live YouTube Data API search results, thumbnails, creators, durations, and publish ages now fill
+  the guide.
+- Selecting a result opens the official YouTube TV application, with browser fallback when YouTube
+  is unavailable.
+- Signed `0.2.0` production candidate installed on the physical TV. Live search, persisted channel
+  state, direct YouTube TV launch, and playback were verified end to end.
 
 ## Active
 
-- Complete user consent and validate session persistence after a successful account connection.
+- Publish the signed `0.2.0` release through the tag-driven GitHub Actions workflow.
 
 ## Next
 
-- Connect live YouTube search results.
-- Add persisted channel management.
-- Add YouTube playback.
-- Validate focus behavior on a physical Android TV device.
+- Add channel editing and reordering.
+- Add pagination controls for deeper result browsing.
+- Monitor YouTube Data API quota consumption in production.
 
 ## Known Blockers
 
-- Completing authorization requires the user to approve read-only YouTube access in their Google
-  account.
 - Expo Doctor reports the core `react-native` package nested under
   `@react-native-tvos/virtualized-lists`; Android TV prebuild succeeds and this is tracked as an
   upstream TV-fork packaging warning.

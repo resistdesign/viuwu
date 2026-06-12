@@ -12,9 +12,11 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "^2.2.0",
     "@viuwu/brand": "0.1.0",
     "@viuwu/core": "0.1.0",
     "expo": "~56.0.9",
+    "expo-intent-launcher": "~56.0.4",
     "expo-secure-store": "~56.0.4",
     "expo-splash-screen": "~56.0.10",
     "expo-status-bar": "~56.0.4",
