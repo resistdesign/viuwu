@@ -2,13 +2,13 @@
   "expo": {
     "name": "Viuwu",
     "slug": "viuwu",
-    "version": "0.2.0",
+    "version": "0.2.1",
     "orientation": "landscape",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "dark",
     "android": {
       "package": "design.resist.viuwu",
-      "versionCode": 3,
+      "versionCode": 4,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#0b0910"

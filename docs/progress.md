@@ -40,10 +40,11 @@ The YouTube-only Android TV application is functional end to end on physical har
   logic plus development diagnostics.
 - Android TV launch branding now uses the Viuwu icon on the splash screen and the full logo for the
   launcher artwork.
+- Signed `0.2.0` release published through the tag-driven GitHub Actions workflow.
 
 ## Active
 
-- Publish the signed `0.2.0` release through the tag-driven GitHub Actions workflow.
+- Publish and install signed `0.2.1` with search-quality and Android TV branding fixes.
 
 ## Next
 
