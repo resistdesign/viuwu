@@ -21,8 +21,8 @@ export function SettingsScreen({ onDisconnect }: SettingsScreenProps) {
           <View style={styles.infoPanel}>
             <Text style={styles.infoTitle}>Your searches are the guide.</Text>
             <Text style={styles.infoText}>
-              Viuwu requests recent matching videos directly from YouTube. Selecting one opens the
-              official YouTube watch experience on this TV.
+              Viuwu requests recent, relevant videos directly from YouTube and filters likely Shorts
+              and tiny clips. Selecting one opens the official YouTube watch experience on this TV.
             </Text>
           </View>
         </View>

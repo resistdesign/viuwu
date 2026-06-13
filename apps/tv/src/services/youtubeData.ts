@@ -1,16 +1,29 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import type { UserChannel, VideoItem } from '@viuwu/core';
+import {
+  isLikelyYouTubeShort,
+  parseDurationSeconds,
+  selectYouTubeVideos,
+  type UserChannel,
+  type VideoItem,
+} from '@viuwu/core';
 
 import type { YouTubeSession } from './youtubeAuth';
 
 const API_ROOT = 'https://www.googleapis.com/youtube/v3';
-const CACHE_KEY = 'viuwu.youtube.guide-cache.v1';
+const CACHE_KEY = 'viuwu.youtube.guide-cache.v2';
 const CACHE_MAX_AGE_MS = 15 * 60 * 1000;
+const SEARCH_CANDIDATE_COUNT = '25';
+const FRESHNESS_WINDOW_MS = 365 * 86_400_000;
 
 interface SearchItem {
   id: { videoId?: string };
-  snippet: {
+}
+
+interface VideoDetailsItem {
+  id: string;
+  contentDetails?: { duration?: string };
+  snippet?: {
     title: string;
     channelTitle: string;
     publishedAt: string;
@@ -20,6 +33,7 @@ interface SearchItem {
       default?: { url: string };
     };
   };
+  statistics?: { viewCount?: string };
 }
 
 interface SearchResponse {
@@ -28,7 +42,7 @@ interface SearchResponse {
 }
 
 interface VideosResponse {
-  items?: Array<{ id: string; contentDetails?: { duration?: string } }>;
+  items?: VideoDetailsItem[];
   error?: { message?: string };
 }
 
@@ -49,13 +63,11 @@ function decodeHtml(value: string) {
   return value.replace(/&(?:amp|quot|#39|lt|gt);/g, (entity) => entities[entity] ?? entity);
 }
 
-function formatDuration(value?: string) {
-  if (!value) return '';
-  const match = value.match(/P(?:\d+D)?T(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/);
-  if (!match) return '';
-  const hours = Number(match[1] ?? 0);
-  const minutes = Number(match[2] ?? 0);
-  const seconds = Number(match[3] ?? 0);
+function formatDuration(totalSeconds: number) {
+  if (totalSeconds <= 0) return '';
+  const hours = Math.floor(totalSeconds / 3_600);
+  const minutes = Math.floor((totalSeconds % 3_600) / 60);
+  const seconds = totalSeconds % 60;
   return hours > 0
     ? `${hours}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`
     : `${minutes}:${String(seconds).padStart(2, '0')}`;
@@ -67,7 +79,8 @@ function formatPublished(value: string) {
   if (ageDays === 1) return 'Yesterday';
   if (ageDays < 7) return `${ageDays} days ago`;
   if (ageDays < 35) return `${Math.floor(ageDays / 7)} weeks ago`;
-  return `${Math.floor(ageDays / 30)} months ago`;
+  if (ageDays < 365) return `${Math.floor(ageDays / 30)} months ago`;
+  return `${Math.floor(ageDays / 365)} years ago`;
 }
 
 async function youtubeGet<T extends { error?: { message?: string } }>(
@@ -89,13 +102,15 @@ async function youtubeGet<T extends { error?: { message?: string } }>(
 }
 
 async function searchChannel(channel: UserChannel, session: YouTubeSession) {
+  const publishedAfter = new Date(Date.now() - FRESHNESS_WINDOW_MS).toISOString();
   const search = await youtubeGet<SearchResponse>(
     'search',
     {
       part: 'snippet',
       type: 'video',
-      order: 'date',
-      maxResults: '8',
+      order: 'relevance',
+      maxResults: SEARCH_CANDIDATE_COUNT,
+      publishedAfter,
       q: channel.query,
       safeSearch: 'moderate',
     },
@@ -107,29 +122,49 @@ async function searchChannel(channel: UserChannel, session: YouTubeSession) {
   const ids = items.map((item) => item.id.videoId!).join(',');
   const details = await youtubeGet<VideosResponse>(
     'videos',
-    { part: 'contentDetails', id: ids },
+    { part: 'contentDetails,snippet,statistics', id: ids },
     session,
   );
-  const durations = new Map(
-    (details.items ?? []).map((item) => [item.id, formatDuration(item.contentDetails?.duration)]),
-  );
-
-  return items.map<VideoItem>((item) => {
+  const detailsById = new Map((details.items ?? []).map((item) => [item.id, item]));
+  const candidates = items.flatMap<VideoItem>((item) => {
     const videoId = item.id.videoId!;
-    return {
-      id: videoId,
-      youtubeVideoId: videoId,
-      title: decodeHtml(item.snippet.title),
-      creator: decodeHtml(item.snippet.channelTitle),
-      duration: durations.get(videoId) ?? '',
-      publishedLabel: formatPublished(item.snippet.publishedAt),
-      thumbnailUrl:
-        item.snippet.thumbnails.high?.url ??
-        item.snippet.thumbnails.medium?.url ??
-        item.snippet.thumbnails.default?.url ??
-        `https://i.ytimg.com/vi/${videoId}/mqdefault.jpg`,
-    };
+    const detail = detailsById.get(videoId);
+    const snippet = detail?.snippet;
+    if (!snippet) return [];
+
+    const durationSeconds = parseDurationSeconds(detail.contentDetails?.duration ?? '');
+    const title = decodeHtml(snippet.title);
+    const parsedViewCount = Number(detail.statistics?.viewCount);
+    return [
+      {
+        id: videoId,
+        youtubeVideoId: videoId,
+        title,
+        creator: decodeHtml(snippet.channelTitle),
+        duration: formatDuration(durationSeconds),
+        durationSeconds,
+        publishedAt: snippet.publishedAt,
+        publishedLabel: formatPublished(snippet.publishedAt),
+        thumbnailUrl:
+          snippet.thumbnails.high?.url ??
+          snippet.thumbnails.medium?.url ??
+          snippet.thumbnails.default?.url ??
+          `https://i.ytimg.com/vi/${videoId}/mqdefault.jpg`,
+        viewCount: Number.isFinite(parsedViewCount) ? parsedViewCount : undefined,
+        isLikelyShort: isLikelyYouTubeShort(title, durationSeconds),
+      },
+    ];
   });
+
+  const selection = selectYouTubeVideos(channel.query, candidates);
+  if (__DEV__) {
+    console.info('[YouTube quality]', {
+      channel: channel.query,
+      tier: selection.tier,
+      ...selection.diagnostics,
+    });
+  }
+  return selection.videos;
 }
 
 function channelSignature(channels: UserChannel[]) {

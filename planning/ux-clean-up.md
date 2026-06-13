@@ -15,43 +15,43 @@ The goal is:
 In `apps/tv/src/services/youtubeData.ts`, `searchChannel()` currently calls YouTube search with:
 
 ```ts
-order: 'date'
-maxResults: '8'
-type: 'video'
-safeSearch: 'moderate'
-q: channel.query
+order: 'date';
+maxResults: '8';
+type: 'video';
+safeSearch: 'moderate';
+q: channel.query;
 ```
 
 Then it fetches video details for duration, but only stores formatted duration.
 
 Current problems:
 
-* only 8 candidates are requested
-* newest-only can be low relevance
-* Shorts are not filtered
-* very short videos are not filtered
-* duration is formatted but not used as quality signal
-* no channel-level quality preferences exist yet
-* no retry/fallback strategy exists if filtering removes too many results
+- only 8 candidates are requested
+- newest-only can be low relevance
+- Shorts are not filtered
+- very short videos are not filtered
+- duration is formatted but not used as quality signal
+- no channel-level quality preferences exist yet
+- no retry/fallback strategy exists if filtering removes too many results
 
 ## UX Goal
 
 Each channel row should feel like:
 
-* real videos
-* useful TV browsing
-* relevant to the saved search
-* recent enough
-* mostly not Shorts
-* enough results to fill the row
+- real videos
+- useful TV browsing
+- relevant to the saved search
+- recent enough
+- mostly not Shorts
+- enough results to fill the row
 
 Avoid showing rows full of:
 
-* Shorts
-* 8-second clips
-* barely-related results
-* low-quality newest-only matches
-* empty rows caused by over-filtering
+- Shorts
+- 8-second clips
+- barely-related results
+- low-quality newest-only matches
+- empty rows caused by over-filtering
 
 ## Search Strategy
 
@@ -59,9 +59,9 @@ Update YouTube loading to fetch more candidates than displayed.
 
 Suggested first pass:
 
-* request `maxResults: 25` or `50`
-* filter candidates locally
-* display the best 8-12 results per row
+- request `maxResults: 25` or `50`
+- filter candidates locally
+- display the best 8-12 results per row
 
 This gives Viuwu enough candidates to reject junk.
 
@@ -72,17 +72,17 @@ Use `videos.list` with more detail fields.
 Fetch:
 
 ```ts
-part: 'contentDetails,snippet,statistics'
+part: 'contentDetails,snippet,statistics';
 ```
 
 Use this to inspect:
 
-* duration
-* title
-* channel title
-* published date
-* thumbnails
-* view count if available
+- duration
+- title
+- channel title
+- published date
+- thumbnails
+- view count if available
 
 Keep API quota in mind.
 
@@ -100,9 +100,9 @@ Filter out likely Shorts / tiny videos.
 
 Suggested defaults:
 
-* minimum duration: `180` seconds
-* maximum duration: optional, maybe none for now
-* reject videos under 3 minutes by default
+- minimum duration: `180` seconds
+- maximum duration: optional, maybe none for now
+- reject videos under 3 minutes by default
 
 This should be configurable later.
 
@@ -116,24 +116,22 @@ const MIN_TV_WORTHY_SECONDS = 180;
 
 Filter likely Shorts using multiple signals:
 
-* duration under 60 seconds
-* title contains `#shorts`
-* title contains `shorts`
-* thumbnail/result patterns if useful
-* maybe vertical format is not available from API, so do not rely on it
+- duration under 60 seconds
+- title contains `#shorts`
+- title contains `shorts`
+- thumbnail/result patterns if useful
+- maybe vertical format is not available from API, so do not rely on it
 
 For now:
 
 ```ts
-isLikelyShort(video) =
-  durationSeconds < 60 ||
-  title.toLowerCase().includes('#shorts')
+isLikelyShort(video) = durationSeconds < 60 || title.toLowerCase().includes('#shorts');
 ```
 
 Then apply stronger TV-worthy filter:
 
 ```ts
-durationSeconds >= 180
+durationSeconds >= 180;
 ```
 
 ## Relevance Strategy
@@ -154,7 +152,7 @@ This may produce better rows.
 ### Option B: Date first with filtering
 
 ```ts
-order: 'date'
+order: 'date';
 ```
 
 Then filter shorts and tiny videos.
@@ -167,8 +165,8 @@ Then filter shorts and tiny videos.
 
 Preferred implementation:
 
-* start with a hybrid but keep it simple
-* document behavior in `docs/search-quality.md`
+- start with a hybrid but keep it simple
+- document behavior in `docs/search-quality.md`
 
 ## Suggested First Implementation
 
@@ -185,10 +183,10 @@ For each channel:
 
 Scoring can be simple:
 
-* newer is better
-* exact query/title matches are better
-* higher view count is better if available
-* longer than minimum is acceptable, but do not over-reward huge duration
+- newer is better
+- exact query/title matches are better
+- higher view count is better if available
+- longer than minimum is acceptable, but do not over-reward huge duration
 
 Do not over-engineer this yet.
 
@@ -203,19 +201,19 @@ apps/tv/src/services/youtubeRanking.ts
 It can expose:
 
 ```ts
-rankYouTubeVideos(query, videos)
+rankYouTubeVideos(query, videos);
 ```
 
 Initial scoring idea:
 
-* * title contains full query
-* * title contains query terms
-* * published within 30/90/365 days
-* * has medium/high thumbnail
-* * view count logarithmic bonus
-* * under 3 minutes
-* * likely Shorts
-* * title contains `#shorts`
+- - title contains full query
+- - title contains query terms
+- - published within 30/90/365 days
+- - has medium/high thumbnail
+- - view count logarithmic bonus
+- - under 3 minutes
+- - likely Shorts
+- - title contains `#shorts`
 
 Keep it readable and testable.
 
@@ -223,12 +221,12 @@ Keep it readable and testable.
 
 Do not build a huge settings UI yet, but structure code so later channels can support:
 
-* minimum duration
-* freshness window
-* include/exclude Shorts
-* result sort preference
-* blocked words
-* required words
+- minimum duration
+- freshness window
+- include/exclude Shorts
+- result sort preference
+- blocked words
+- required words
 
 For now, use global defaults.
 
@@ -285,12 +283,12 @@ docs/search-quality.md
 
 Include:
 
-* current YouTube search strategy
-* Shorts filtering rules
-* minimum duration rule
-* fallback behavior
-* known limitations
-* future tuning ideas
+- current YouTube search strategy
+- Shorts filtering rules
+- minimum duration rule
+- fallback behavior
+- known limitations
+- future tuning ideas
 
 Also update:
 
@@ -303,34 +301,34 @@ docs/decisions.md
 
 Test with saved searches like:
 
-* `paper craft video games`
-* `godot 4 tutorial`
-* `minecraft build ideas`
-* `blender geometry nodes`
-* `cozy game devlog`
+- `paper craft video games`
+- `godot 4 tutorial`
+- `minecraft build ideas`
+- `blender geometry nodes`
+- `cozy game devlog`
 
 Verify:
 
-* rows have enough thumbnails
-* Shorts are mostly gone
-* videos feel TV-worthy
-* results are still recent enough
-* refresh works
-* empty states are graceful
-* API errors still show cleanly
-* cache invalidates when ranking/search behavior changes
+- rows have enough thumbnails
+- Shorts are mostly gone
+- videos feel TV-worthy
+- results are still recent enough
+- refresh works
+- empty states are graceful
+- API errors still show cleanly
+- cache invalidates when ranking/search behavior changes
 
 ## Acceptance Criteria
 
 Done when:
 
-* Viuwu fetches more candidates than it displays
-* obvious Shorts are filtered out
-* very short videos are filtered out
-* rows show higher-quality real videos
-* rows usually have enough results
-* fallback behavior prevents accidental empty channels
-* search/ranking logic is isolated and readable
-* docs explain the strategy
-* tests are added for duration parsing and ranking/filtering
-* CI passes
+- Viuwu fetches more candidates than it displays
+- obvious Shorts are filtered out
+- very short videos are filtered out
+- rows show higher-quality real videos
+- rows usually have enough results
+- fallback behavior prevents accidental empty channels
+- search/ranking logic is isolated and readable
+- docs explain the strategy
+- tests are added for duration parsing and ranking/filtering
+- CI passes
