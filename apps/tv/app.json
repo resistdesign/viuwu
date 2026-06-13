@@ -2,13 +2,13 @@
   "expo": {
     "name": "Viuwu",
     "slug": "viuwu",
-    "version": "0.2.1",
+    "version": "0.2.2",
     "orientation": "landscape",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "dark",
     "android": {
       "package": "design.resist.viuwu",
-      "versionCode": 4,
+      "versionCode": 5,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#0b0910"
@@ -24,6 +24,7 @@
           "androidTVIcon": "./assets/tv-icon.png"
         }
       ],
+      "./plugins/withTVActivityBanner.cjs",
       "./plugins/withReleaseSigning.cjs",
       "expo-secure-store",
       [
