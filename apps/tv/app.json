@@ -21,7 +21,7 @@
           "isTV": true,
           "androidTVRequired": true,
           "androidTVBanner": "./assets/tv-banner.png",
-          "androidTVIcon": "./assets/icon.png"
+          "androidTVIcon": "./assets/tv-icon.png"
         }
       ],
       "./plugins/withReleaseSigning.cjs",
@@ -29,8 +29,8 @@
       [
         "expo-splash-screen",
         {
-          "image": "./assets/splash.png",
-          "imageWidth": 960,
+          "image": "./assets/icon.png",
+          "imageWidth": 240,
           "resizeMode": "contain",
           "backgroundColor": "#0b0910"
         }

@@ -35,6 +35,11 @@ The YouTube-only Android TV application is functional end to end on physical har
   is unavailable.
 - Signed `0.2.0` production candidate installed on the physical TV. Live search, persisted channel
   state, direct YouTube TV launch, and playback were verified end to end.
+- YouTube channel search now evaluates 25 recent relevance-ranked candidates, filters likely Shorts
+  and tiny videos, uses duration fallbacks to preserve useful rows, and exposes test-covered ranking
+  logic plus development diagnostics.
+- Android TV launch branding now uses the Viuwu icon on the splash screen and the full logo for the
+  launcher artwork.
 
 ## Active
 

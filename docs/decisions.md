@@ -46,3 +46,10 @@ Persist only user-created search channels; never seed production with fixture ro
 results through authenticated YouTube Data API calls and cache them for 15 minutes to control
 quota. Launch selected videos explicitly in the YouTube TV package, with a standard watch URL as
 the fallback when YouTube is unavailable.
+
+## 2026-06-13: Relevance-First TV-Worthy Search
+
+Request 25 relevance-ordered YouTube candidates from the previous 12 months, enrich them with video
+details and statistics, then rank and filter locally. Exclude likely Shorts, prefer videos at least
+three minutes long, and progressively relax duration filtering before allowing a row to become
+empty. This improves TV browsing quality without adding extra quota-expensive search retries.

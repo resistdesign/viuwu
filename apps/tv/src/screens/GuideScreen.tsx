@@ -50,7 +50,7 @@ export function GuideScreen({ channels, onOpenChannels, session }: GuideScreenPr
         <Text style={styles.eyebrow}>YOUR GUIDE IS EMPTY</Text>
         <Text style={styles.emptyTitle}>Start with a search.</Text>
         <Text style={styles.emptyCopy}>
-          Add a channel using words you choose. Viuwu will load recent matching videos from YouTube.
+          Add a channel using words you choose. Viuwu will load strong matching videos from YouTube.
         </Text>
         <Focusable hasTVPreferredFocus onPress={onOpenChannels} style={styles.primaryButton}>
           <Text style={styles.primaryButtonText}>Create your first channel</Text>
@@ -66,8 +66,8 @@ export function GuideScreen({ channels, onOpenChannels, session }: GuideScreenPr
           <Text style={styles.eyebrow}>LIVE FROM YOUTUBE</Text>
           <Text style={styles.title}>Your guide</Text>
           <Text style={styles.subtitle}>
-            {channels.filter((channel) => channel.enabled).length} saved searches, newest matches
-            first.
+            {channels.filter((channel) => channel.enabled).length} saved searches, ranked for
+            relevance and recency.
           </Text>
         </View>
         <Focusable disabled={loading} onPress={() => void load(true)} style={styles.refreshButton}>

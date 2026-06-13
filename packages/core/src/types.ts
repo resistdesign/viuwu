@@ -15,8 +15,12 @@ export interface VideoItem {
   title: string;
   creator: string;
   duration: string;
+  durationSeconds?: number;
+  publishedAt?: string;
   publishedLabel: string;
   thumbnailUrl: string;
+  viewCount?: number;
+  isLikelyShort?: boolean;
 }
 
 export interface GuideRow {

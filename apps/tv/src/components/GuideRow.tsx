@@ -37,7 +37,7 @@ export function GuideRow({ row, isFirst, onSelectVideo }: GuideRowProps) {
         ))}
         {row.videos.length === 0 && (
           <View style={styles.noResults}>
-            <Text style={styles.noResultsText}>No recent YouTube matches.</Text>
+            <Text style={styles.noResultsText}>No strong matches yet.</Text>
           </View>
         )}
       </ScrollView>
