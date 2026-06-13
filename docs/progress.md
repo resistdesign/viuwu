@@ -41,10 +41,13 @@ The YouTube-only Android TV application is functional end to end on physical har
 - Android TV launch branding now uses the Viuwu icon on the splash screen and the full logo for the
   launcher artwork.
 - Signed `0.2.0` release published through the tag-driven GitHub Actions workflow.
+- Signed `0.2.1` release published and installed on the physical TV. Search ranking, persisted
+  channels, YouTube session continuity, and long-form guide results were verified.
 
 ## Active
 
-- Publish and install signed `0.2.1` with search-quality and Android TV branding fixes.
+- Publish and install `0.2.2` with the TV banner applied directly to the Leanback activity for
+  launcher compatibility.
 
 ## Next
 
